@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CryptoLite
+
+A minimalist, beginner-friendly cryptocurrency tracking app built with a focus on clarity, speed, and usability.
+
+---
+
+## Overview
+
+CryptoLite is a frontend-only crypto tracker designed for users who want quick, essential insights into the crypto market without overwhelming data or complex tools.
+
+It provides a clean interface to:
+
+- View top cryptocurrencies
+- Search coins globally
+- Explore individual coin details
+- Save coins to a personal watchlist
+
+---
+
+## Goals
+
+- Keep the UI **simple and intuitive**
+- Show only **essential data**
+- Ensure **fast performance**
+- Build a **responsive experience** across mobile and desktop
+
+---
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **State Management:** React Hooks (`useState`, `useEffect`)
+- **API:** CoinGecko
+- **Storage:** localStorage (for watchlist)
+
+---
+
+## Features
+
+### Homepage
+
+- Displays top cryptocurrencies
+- Pagination support
+- Clean table layout (mobile & desktop optimized)
+
+### Search
+
+- Global coin search using API
+- Debounced input for performance
+- Mobile and desktop optimized UI
+
+### Coin Details
+
+- Price and 24h change
+- Market cap
+- 24h high / low
+- Circulating, total, and max supply
+- External links (website, socials)
+
+### Watchlist
+
+- Add/remove coins
+- Persisted with localStorage
+- Dedicated page
+
+---
+
+## Design Principles
+
+- Minimalist UI
+- Beginner-friendly data presentation
+- Consistent layout across devices
+- No unnecessary complexity
+
+---
+
+## API Endpoints
+
+- `/coins/markets` → Market data (homepage)
+- `/search` → Global search
+- `/coins/{id}` → Coin details
+
+---
+
+## Limitations
+
+- No backend
+- No authentication
+- No real-time WebSocket updates
+- No advanced charts (yet)
+
+---
+
+## Future Improvements
+
+- 24h price chart
+- Better data formatting
+- Performance optimizations
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Status
 
-## Learn More
+In active development (Build-in-public challenge)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is open-source and available under the MIT License.
