@@ -1,0 +1,96 @@
+.searchContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.searchTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 998;
+  background-color: var(--color-card);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  padding: var(--space-lg);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.show {
+  transform: translateX(0);
+}
+
+.searchNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.searchInput {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  padding: var(--space-xs);
+  position: relative;
+  color: var(--color-text-secondary);
+}
+
+.searchInput::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-text-secondary);
+}
+
+.searchInput::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #901bcf;
+  transition: width 0.3s ease;
+}
+
+.searchInput:focus-within::after {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-sm);
+  border: none;
+  outline: none;
+  background-color: var(--color-card);
+  color: var(--color-text-primary);
+}
+
+.closeIcon {
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .searchTab {
+    width: 100%;
+    padding: var(--space-md);
+  }
+}

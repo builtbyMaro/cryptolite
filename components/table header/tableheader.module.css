@@ -1,0 +1,109 @@
+.headerContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-sm);
+  background-color: var(--color-card);
+  position: sticky;
+  top: 0;
+  z-index: 998;
+  transition: background-color 0.3s ease;
+}
+
+.coinContainer,
+.dayContainer,
+.headerContainer,
+.hourContainer,
+.marketCapContainer,
+.priceContainer,
+.rankContainer,
+.weekContainer {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: var(--space-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  border-left: 1px solid var(--color-gray);
+  transition: color 0.3s ease;
+}
+
+.rankContainer {
+  width: 10%;
+  justify-content: start;
+  padding-left: var(--space-xl);
+}
+
+.coinContainer {
+  width: 30%;
+  justify-content: start;
+  padding-left: var(--space-xl);
+}
+
+.priceContainer {
+  width: 10%;
+}
+
+.hourContainer {
+  width: 10%;
+}
+
+.dayContainer {
+  width: 10%;
+}
+
+.weekContainer {
+  width: 10%;
+}
+
+.marketCapContainer {
+  width: 20%;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .hourContainer,
+  .weekContainer,
+  .marketCapContainer {
+    display: none;
+  }
+
+  .rankContainer,
+  .coinContainer {
+    padding-left: var(--space-md);
+  }
+
+  .rankContainer {
+    width: 10%;
+  }
+
+  .coinContainer {
+    width: 40%;
+  }
+
+  .dayContainer,
+  .priceContainer {
+    width: 25%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 890px) {
+  .hourContainer,
+  .weekContainer {
+    display: none;
+  }
+
+  .rankContainer {
+    width: 10%;
+  }
+
+  .coinContainer {
+    width: 30%;
+  }
+
+  .dayContainer,
+  .priceContainer,
+  .marketCapContainer {
+    width: 20%;
+  }
+}

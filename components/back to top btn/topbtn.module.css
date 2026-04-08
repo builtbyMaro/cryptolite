@@ -1,0 +1,25 @@
+.btn {
+  position: fixed;
+  bottom: var(--space-2xl);
+  right: var(--space-2xl);
+  background-color: var(--color-card);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+  border: none;
+  border-radius: 50%;
+  width: var(--space-2xl);
+  height: var(--space-2xl);
+  cursor: pointer;
+  z-index: 998;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .btn {
+    bottom: 96px;
+    right: var(--space-xl);
+  }
+}
