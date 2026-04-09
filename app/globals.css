@@ -9,6 +9,7 @@
   --color-bg: #f9fafb;
   --color-card: #ffffff;
   --color-gray: #e5e7eb;
+  --skeleton-highlight: #f3f4f6;
 
   --color-text-primary: #111827;
   --color-text-secondary: #6b7280;
@@ -22,6 +23,7 @@
   --font-size-lg: 1.125em;
   --font-size-xl: 1.25em;
   --font-size-2xl: 1.5em;
+  --font-size-3xl: 2em;
 
   /* Spacing */
   --space-xs: 4px;
@@ -46,6 +48,7 @@
   --color-bg: #111827;
   --color-card: #1f2937;
   --color-gray: #374151;
+  --skeleton-highlight: #4b5563;
 
   --color-text-primary: #f9fafb;
   --color-text-secondary: #d1d5db;

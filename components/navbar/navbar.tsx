@@ -23,30 +23,13 @@ const Navbar = () => {
       localStorage.setItem("theme", "dark");
       setDarkMode(true);
     }
+    console.log("theme clicked");
   };
 
   useEffect(() => {
     const html = document.documentElement;
-    const savedTheme = localStorage.getItem("theme");
-
-    if (savedTheme === "dark") {
-      html.classList.add("dark");
-      setDarkMode(true);
-    } else if (savedTheme === "light") {
-      html.classList.remove("dark");
-      setDarkMode(false);
-    } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
-      if (prefersDark) {
-        html.classList.add("dark");
-        setDarkMode(true);
-      } else {
-        html.classList.remove("dark");
-        setDarkMode(false);
-      }
-    }
+    const isDark = html.classList.contains("dark");
+    setDarkMode(isDark);
   }, []);
 
   return (
@@ -72,7 +55,7 @@ const Navbar = () => {
           </Link>
           <div
             className={styles.searchInput}
-            onClick={() => setShowSearch(!showSearch)}
+            onClick={() => setShowSearch(true)}
           >
             <i className="bx bx-search" />
             <p>Search</p>

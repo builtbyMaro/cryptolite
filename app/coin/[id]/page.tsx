@@ -1,11 +1,10 @@
+"use client";
+import CoinDetailLoader from "@/components/loading screens/coin detail loader/coinDetailLoader";
+import { useState } from "react";
+
 const page = () => {
-  return (
-    <>
-      <section>
-        <h1>Coin</h1>
-      </section>
-    </>
-  );
+  const [loading, setLoading] = useState(true);
+  return <>{loading && <CoinDetailLoader />}</>;
 };
 
 export default page;

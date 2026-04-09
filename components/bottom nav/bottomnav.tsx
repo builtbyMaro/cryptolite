@@ -30,7 +30,8 @@ const BottomNav = () => {
         </div>
         <Link
           href="/watchlist"
-          className={`${styles.navLink} ${pathname === "/watchlist" ? styles.activeLink : ""}`}
+          className={`${styles.navLink} ${pathname === "/watchlist" && showSearch === false ? styles.activeLink : ""}`}
+          onClick={() => showSearch && setShowSearch(false)}
         >
           <i className="bx bx-star" />
           <h3>Watchlist</h3>

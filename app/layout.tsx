@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import UseTheme from "../lib/hooks/useTheme";
+import Navbar from "@/components/navbar/navbar";
+import BottomNav from "@/components/bottom nav/bottomnav";
+import BackToTop from "@/components/back to top btn/topbtn";
 
 export const metadata: Metadata = {
   title: "CryptoLite",
@@ -14,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -57,10 +59,28 @@ export default function RootLayout({
           sizes="512x512"
           href="/android-chrome-512x512.png"
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    `,
+          }}
+        />
       </head>
       <body>
-        <UseTheme />
+        <Navbar />
         {children}
+        <BackToTop />
+        <BottomNav />
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ import styles from "./search.module.css";
 import "boxicons/css/boxicons.min.css";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import SearchLoader from "../loading screens/search page loader/searchLoader";
 
 type Props = {
   showSearch: boolean;
@@ -11,6 +12,7 @@ type Props = {
 
 const SearchTab = ({ showSearch, setShowSearch }: Props) => {
   const searchRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (showSearch) {
@@ -43,6 +45,7 @@ const SearchTab = ({ showSearch, setShowSearch }: Props) => {
               onClick={() => setShowSearch(false)}
             />
           </div>
+          {loading && <SearchLoader />}
         </div>
       </div>
     )
