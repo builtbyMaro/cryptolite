@@ -10,6 +10,7 @@
   --color-card: #ffffff;
   --color-gray: #e5e7eb;
   --skeleton-highlight: #f3f4f6;
+  --color-border: hsla(220, 13%, 91%, 0.6);
 
   --color-text-primary: #111827;
   --color-text-secondary: #6b7280;
@@ -49,6 +50,7 @@
   --color-card: #1f2937;
   --color-gray: #374151;
   --skeleton-highlight: #4b5563;
+  --color-border: hsla(215, 19%, 27%, 0.5);
 
   --color-text-primary: #f9fafb;
   --color-text-secondary: #d1d5db;

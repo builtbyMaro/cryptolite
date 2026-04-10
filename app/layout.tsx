@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import BottomNav from "@/components/bottom nav/bottomnav";
@@ -59,7 +60,15 @@ export default function RootLayout({
           sizes="512x512"
           href="/android-chrome-512x512.png"
         />
-        <script
+      </head>
+      <body>
+        <Navbar />
+        {children}
+        <BackToTop />
+        <BottomNav />
+        <Script
+          id="theme-script"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
       (function () {
@@ -75,12 +84,6 @@ export default function RootLayout({
     `,
           }}
         />
-      </head>
-      <body>
-        <Navbar />
-        {children}
-        <BackToTop />
-        <BottomNav />
       </body>
     </html>
   );

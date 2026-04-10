@@ -23,7 +23,6 @@ const Navbar = () => {
       localStorage.setItem("theme", "dark");
       setDarkMode(true);
     }
-    console.log("theme clicked");
   };
 
   useEffect(() => {

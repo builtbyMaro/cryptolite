@@ -97,3 +97,9 @@
     display: flex;
   }
 }
+
+@media (min-width: 481px) and (max-width: 890px) {
+  .searchInput {
+    width: 150px;
+  }
+}
