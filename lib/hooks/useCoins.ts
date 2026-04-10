@@ -20,7 +20,7 @@ export const useCoins = () => {
       if (!force && now < cooldownUntil.current) return;
 
       // stop spam from auto-refresh effects
-      if (!force && now - lastFetchTime.current < 5000) return;
+      if (!force && now - lastFetchTime.current < 45000) return;
 
       lastFetchTime.current = now;
 
@@ -79,7 +79,7 @@ export const useCoins = () => {
       if (document.visibilityState === "hidden") return;
 
       loadCoins(false);
-    }, 30000);
+    }, 60000);
 
     return () => clearInterval(interval);
   }, [loadCoins]);

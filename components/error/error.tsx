@@ -17,7 +17,7 @@ const Error = ({ message, actionText, action, isCoolingDown }: Props) => {
           className={styles.action}
           disabled={isCoolingDown}
         >
-          {actionText}
+          {isCoolingDown ? "wait..." : actionText}
         </button>
       )}
     </div>
