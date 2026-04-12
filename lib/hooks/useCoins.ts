@@ -70,7 +70,7 @@ export const useCoins = () => {
 
   // initial load + whenever page changes
   useEffect(() => {
-    loadCoins(true);
+    loadCoins(true, true);
   }, [page, loadCoins]);
 
   // auto refresh

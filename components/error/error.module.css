@@ -36,5 +36,9 @@
 }
 
 .action:hover {
-  opacity: 0.7;
+  transform: scale(0.9);
+}
+
+.action:disabled {
+  opacity: 0.5;
 }
