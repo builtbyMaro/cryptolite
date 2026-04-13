@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import BottomNav from "@/components/bottom nav/bottomnav";
 import BackToTop from "@/components/back to top btn/topbtn";
+import { AppProvider } from "@/lib/context/appContext";
 
 export const metadata: Metadata = {
   title: "CryptoLite",
@@ -62,15 +63,16 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Navbar />
-        {children}
-        <BackToTop />
-        <BottomNav />
-        <Script
-          id="theme-script"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
+        <AppProvider>
+          <Navbar />
+          {children}
+          <BackToTop />
+          <BottomNav />
+          <Script
+            id="theme-script"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
       (function () {
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -82,8 +84,9 @@ export default function RootLayout({
         }
       })();
     `,
-          }}
-        />
+            }}
+          />
+        </AppProvider>
       </body>
     </html>
   );

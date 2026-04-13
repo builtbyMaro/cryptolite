@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Coin } from "@/lib/types/types";
 import { fetchCoins } from "@/lib/API interactions/fetchCoins";
+import { useAppContext } from "../context/appContext";
 
 export const useCoins = () => {
+  const { isSearching } = useAppContext();
   const [coins, setCoins] = useState<Coin[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ export const useCoins = () => {
 
         cooldownUntil.current = 0;
         setIsCoolingDown(false);
+        console.log("I just Fetched");
       } catch (err: any) {
         if (err.status === 429) {
           const coolDownEnd = Date.now() + 15000;
@@ -70,24 +73,27 @@ export const useCoins = () => {
 
   // initial load + whenever page changes
   useEffect(() => {
+    if (isSearching) return;
+
     loadCoins(true, true);
-  }, [page, loadCoins]);
+  }, [page, isSearching, loadCoins]);
 
   // auto refresh
   useEffect(() => {
     const interval = setInterval(() => {
       if (document.visibilityState === "hidden") return;
+      if (isSearching) return;
 
       loadCoins(false);
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [loadCoins]);
+  }, [loadCoins, isSearching]);
 
   // refresh when user returns to tab
   useEffect(() => {
     const handleVisibility = () => {
-      if (document.visibilityState === "visible") {
+      if (document.visibilityState === "visible" && !isSearching) {
         loadCoins(false);
       }
     };
@@ -96,11 +102,11 @@ export const useCoins = () => {
 
     return () =>
       document.removeEventListener("visibilitychange", handleVisibility);
-  }, [loadCoins]);
+  }, [loadCoins, isSearching]);
 
   // manual retry function
   const refetch = () => {
-    loadCoins(true, true); // force = true
+    loadCoins(true, true);
   };
 
   // scroll to top on page change

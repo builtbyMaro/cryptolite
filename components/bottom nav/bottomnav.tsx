@@ -2,13 +2,19 @@
 import styles from "./bottomnav.module.css";
 import "boxicons/css/boxicons.min.css";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import SearchTab from "../search/search";
+import { useAppContext } from "@/lib/context/appContext";
 
 const BottomNav = () => {
   const pathname = usePathname();
   const [showSearch, setShowSearch] = useState(false);
+  const { setIsSearching } = useAppContext();
+
+  useEffect(() => {
+    setIsSearching(showSearch);
+  }, [showSearch]);
 
   return (
     <>

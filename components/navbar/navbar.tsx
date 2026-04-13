@@ -5,11 +5,13 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import SearchTab from "../search/search";
+import { useAppContext } from "@/lib/context/appContext";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [darkMode, setDarkMode] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const { setIsSearching } = useAppContext();
 
   const toggleTheme = () => {
     const html = document.documentElement;
@@ -24,6 +26,10 @@ const Navbar = () => {
       setDarkMode(true);
     }
   };
+
+  useEffect(() => {
+    setIsSearching(showSearch);
+  }, [showSearch]);
 
   useEffect(() => {
     const html = document.documentElement;
