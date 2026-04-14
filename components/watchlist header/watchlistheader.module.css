@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+.container span {
+  color: var(--color-primary);
+}
+
+.clearBtn {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+}
+
+.clearBtn:hover {
+  transform: scale(0.9);
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .container {
+    padding: var(--space-sm);
+  }
+}

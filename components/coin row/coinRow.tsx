@@ -2,12 +2,15 @@ import styles from "./coinrow.module.css";
 import { Coin } from "@/lib/types/types";
 import Link from "next/link";
 import { getPercentageMeta } from "@/lib/utils/percentageMeta";
+import { useAppContext } from "@/lib/context/appContext";
 
 type Prop = {
   coin: Coin;
+  showrank?: boolean;
 };
 
-const CoinRow = ({ coin }: Prop) => {
+const CoinRow = ({ coin, showrank = true }: Prop) => {
+  const { toggleWatchlist, isInWatchlist } = useAppContext();
   const hour = getPercentageMeta(coin.price_change_percentage_1h_in_currency);
   const day = getPercentageMeta(coin.price_change_percentage_24h);
   const week = getPercentageMeta(coin.price_change_percentage_7d_in_currency);
@@ -15,8 +18,15 @@ const CoinRow = ({ coin }: Prop) => {
   return (
     <div className={styles.rowContainer}>
       <div className={styles.rankContainer}>
-        <i className="bx bx-star" />
-        <p>{coin.market_cap_rank}</p>
+        <i
+          className={
+            isInWatchlist(coin.id)
+              ? `bx bxs-star ${styles.filledIcon}`
+              : "bx bx-star"
+          }
+          onClick={() => toggleWatchlist(coin.id)}
+        />
+        {showrank && <p>{coin.market_cap_rank}</p>}
       </div>
       <Link href={`/coin/${coin.id}`} className={styles.link}>
         <div className={styles.coinContainer}>
