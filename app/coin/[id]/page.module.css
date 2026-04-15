@@ -1,0 +1,266 @@
+.card {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray) 25%,
+    var(--skeleton-highlight) 50%,
+    var(--color-gray) 75%
+  );
+
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  padding: var(--space-sm);
+  width: 100%;
+  height: 60px;
+  background-color: var(--color-card);
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 998;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-secondary);
+  margin-right: var(--space-xl);
+  cursor: pointer;
+}
+
+.navNameContainer {
+  width: 30%;
+  height: 100%;
+  border-radius: var(--border-radius-md);
+}
+
+.priceSection {
+  display: flex;
+  height: 200px;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-3xl);
+}
+
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--space-md);
+  padding: var(--space-md);
+  gap: var(--space-md);
+  background-color: var(--color-card);
+}
+
+.coin {
+  width: 25%;
+  height: 30%;
+  border-radius: var(--border-radius-md);
+}
+
+.price {
+  width: 40%;
+  height: 50%;
+  border-radius: var(--border-radius-md);
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-xl) var(--space-3xl);
+  width: 100%;
+  height: 80vh;
+}
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 35%;
+  height: 100%;
+  padding: var(--space-md);
+  background-color: var(--color-card);
+  border-radius: var(--space-md);
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 15%;
+}
+
+.detailItem {
+  width: 35%;
+  height: 70%;
+  border-radius: var(--border-radius-md);
+}
+
+.detailValue {
+  width: 50%;
+  height: 70%;
+  border-radius: var(--border-radius-md);
+}
+
+.chartContainer {
+  width: 60%;
+  height: 100%;
+  border-radius: var(--space-md);
+}
+
+.information {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-xl) var(--space-3xl);
+}
+
+.informationCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: 50%;
+  height: 250px;
+  padding: var(--space-md);
+  background-color: var(--color-card);
+  border-radius: var(--space-md);
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 20%;
+}
+
+.infoItem {
+  width: 35%;
+  height: 70%;
+  border-radius: var(--border-radius-md);
+}
+
+.infoValue {
+  width: 50%;
+  height: 70%;
+  border-radius: var(--border-radius-md);
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 400px;
+  padding: var(--space-md);
+  gap: var(--space-md);
+}
+
+.message {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.action {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+}
+
+.action:hover {
+  transform: scale(0.9);
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .backButton {
+    margin-right: var(--space-md);
+    font-size: var(--font-size-3xl);
+  }
+
+  .backButton h5 {
+    display: none;
+  }
+
+  .navNameContainer {
+    width: 50%;
+    height: 70%;
+  }
+
+  .priceSection {
+    padding: var(--space-lg);
+    height: 150px;
+  }
+
+  .priceContainer {
+    align-items: start;
+  }
+
+  .coin {
+    width: 40%;
+  }
+
+  .price {
+    width: 50%;
+  }
+
+  .details {
+    flex-direction: column;
+    padding: var(--space-lg);
+    height: auto;
+    gap: var(--space-2xl);
+  }
+
+  .detailContainer,
+  .chartContainer {
+    width: 100%;
+    height: 300px;
+  }
+
+  .information {
+    padding: var(--space-lg);
+  }
+
+  .informationCard {
+    width: 100%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 890px) {
+  .details {
+    flex-direction: column;
+    height: auto;
+    gap: var(--space-2xl);
+  }
+
+  .detailContainer,
+  .chartContainer {
+    width: 100%;
+    height: 350px;
+  }
+
+  .informationCard {
+    width: 100%;
+  }
+}

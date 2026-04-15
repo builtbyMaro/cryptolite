@@ -1,10 +1,18 @@
-"use client";
-import CoinDetailLoader from "@/components/loading screens/coin detail loader/coinDetailLoader";
-import { useState } from "react";
+import { fetchCoinDetails } from "@/lib/API interactions/fetchCoinDetails";
+import CoinClient from "./components/coinClient";
 
-const page = () => {
-  const [loading, setLoading] = useState(true);
-  return <>{loading && <CoinDetailLoader />}</>;
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+const page = async ({ params }: Props) => {
+  const { id } = await params;
+  console.log("Coin ID:", id);
+  const coin = await fetchCoinDetails(id);
+
+  return <CoinClient coin={coin} key={coin.id} />;
 };
 
 export default page;

@@ -1,4 +1,5 @@
-import styles from "./coindetail.module.css";
+"use client";
+import styles from "./page.module.css";
 import "boxicons/css/boxicons.min.css";
 import { useBack } from "@/lib/hooks/useBack";
 
