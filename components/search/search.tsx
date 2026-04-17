@@ -35,7 +35,8 @@ const SearchTab = ({ showSearch, setShowSearch }: Props) => {
   const renderContent = () => {
     if (error) return <Error message={error} />;
     if (loading) return <SearchLoader />;
-    if (!hasSearched) return <p>Start typing to search</p>;
+    if (!hasSearched)
+      return <p className={styles.start}>Start typing to search</p>;
     if (coins.length === 0)
       return <Error message={`No results for "${search}"`} />;
 

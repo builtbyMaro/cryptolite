@@ -44,7 +44,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       (prev) =>
         prev.includes(id)
           ? prev.filter((coin) => coin !== id) // remove
-          : [...prev, id], // add
+          : [id, ...prev], // add
     );
   };
 

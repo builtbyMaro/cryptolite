@@ -16,7 +16,7 @@
   align-items: center;
   font-size: var(--font-size-2xl);
   color: var(--color-text-secondary);
-  margin-right: var(--space-3xl);
+  margin-right: var(--space-xl);
   cursor: pointer;
 }
 
@@ -40,9 +40,10 @@
   color: var(--color-text-secondary);
 }
 
-.nameContainer i {
+.icon {
   font-size: var(--font-size-2xl);
   cursor: pointer;
+  color: var(--color-text-primary);
 }
 
 .filledIcon {

@@ -1,0 +1,94 @@
+.priceSection {
+  display: flex;
+  height: 200px;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-3xl);
+}
+
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--space-md);
+  padding: var(--space-md);
+  gap: var(--space-md);
+  background-color: var(--color-card);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.coin {
+  display: flex;
+  align-items: end;
+  gap: var(--space-sm);
+}
+
+.name {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+}
+
+.symbol {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.price > h3 {
+  font-size: var(--font-size-4xl);
+  color: var(--color-text-primary);
+}
+
+.percentageContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-xl);
+}
+
+.positive {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-positive);
+}
+
+.negative {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-negative);
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .priceSection {
+    padding: var(--space-lg);
+    height: 200px;
+  }
+
+  .priceContainer {
+    align-items: start;
+    gap: var(--space-sm);
+  }
+
+  .name {
+    font-size: var(--font-size-xl);
+  }
+
+  .symbol {
+    font-size: var(--font-size-md);
+  }
+
+  .price {
+    align-items: start;
+    flex-direction: column;
+  }
+}

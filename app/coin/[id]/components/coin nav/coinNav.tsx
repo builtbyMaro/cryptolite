@@ -5,11 +5,10 @@ import { useBack } from "@/lib/hooks/useBack";
 
 type Props = {
   coinName: string;
-  coinSymbol: string;
   coinId: string;
 };
 
-const CoinNav = ({ coinName, coinSymbol, coinId }: Props) => {
+const CoinNav = ({ coinName, coinId }: Props) => {
   const handleBack = useBack();
   const { isInWatchlist, toggleWatchlist } = useAppContext();
 
@@ -20,15 +19,12 @@ const CoinNav = ({ coinName, coinSymbol, coinId }: Props) => {
         <h5>Back</h5>
       </div>
       <div className={styles.nameContainer}>
-        <h2 className={styles.name}>
-          {coinName}
-          <span>{coinSymbol.toUpperCase()}</span>
-        </h2>
+        <h2 className={styles.name}>{coinName}</h2>
         <i
           className={
             isInWatchlist(coinId)
-              ? `bx bxs-star ${styles.filledIcon}`
-              : "bx bx-star"
+              ? `bx bxs-star ${styles.filledIcon} ${styles.icon}`
+              : `bx bx-star ${styles.icon}`
           }
           onClick={() => toggleWatchlist(coinId)}
         />

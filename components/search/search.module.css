@@ -97,6 +97,10 @@
   transition: color 0.2s ease;
 }
 
+.start {
+  color: var(--color-text-primary);
+}
+
 @media (min-width: 320px) and (max-width: 480px) {
   .searchTab {
     width: 100%;
