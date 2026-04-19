@@ -1,4 +1,5 @@
 import styles from "./detail.module.css";
+import Chart from "../chart/chart";
 
 type Props = {
   coinData: {
@@ -78,7 +79,9 @@ const DetailSection = ({ coinData, coinId }: Props) => {
           </h5>
         </div>
       </div>
-      <div className={`${styles.chartContainer} ${styles.card}`}></div>
+      <div className={styles.chartContainer}>
+        <Chart id={coinId} />
+      </div>
     </section>
   );
 };

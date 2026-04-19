@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Coin } from "@/lib/types/types";
-import { fetchCoins } from "@/lib/API interactions/fetchCoins";
+import { fetchChart } from "@/lib/API interactions/fetchChart";
 import { useAppContext } from "../context/appContext";
 
-export const useCoins = () => {
+type ChartPoint = {
+  time: number;
+  price: number;
+};
+
+export const useChart = (id: string) => {
   const { isSearching } = useAppContext();
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [page, setPage] = useState(1);
+  const [timeframe, setTimeframe] = useState<"1" | "7" | "30">("1");
+  const [data, setData] = useState<ChartPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCoolingDown, setIsCoolingDown] = useState(false);
@@ -14,15 +18,15 @@ export const useCoins = () => {
   const lastFetchTime = useRef(0);
   const cooldownUntil = useRef(0);
 
-  const loadCoins = useCallback(
+  const loadChart = useCallback(
     async (showLoading = false, force = false) => {
       const now = Date.now();
 
-      // cooldown check
+      // block during cooldown
       if (!force && now < cooldownUntil.current) return;
 
-      // stop spam from auto-refresh effects
-      if (!force && now - lastFetchTime.current < 45000) return;
+      // prevent spam fetches
+      if (!force && now - lastFetchTime.current < 60000) return;
 
       lastFetchTime.current = now;
 
@@ -30,12 +34,19 @@ export const useCoins = () => {
       setError(null);
 
       try {
-        const data = await fetchCoins(page);
-        setCoins(data);
+        const res = await fetchChart(id, timeframe);
+
+        const formattedRes: ChartPoint[] = res.prices.map(
+          ([time, price]: [number, number]) => ({
+            time,
+            price,
+          }),
+        );
+
+        setData(formattedRes);
 
         cooldownUntil.current = 0;
         setIsCoolingDown(false);
-        console.log("I just Fetched");
       } catch (err: any) {
         if (err.status === 429) {
           const coolDownEnd = Date.now() + 15000;
@@ -43,13 +54,14 @@ export const useCoins = () => {
           setIsCoolingDown(true);
 
           setError("Too many requests. Please wait a moment.");
+
           setTimeout(() => {
             setIsCoolingDown(false);
           }, 15000);
+
           return;
         }
 
-        // network / CORS failure fallback
         if (err.message === "Network Error") {
           cooldownUntil.current = Date.now() + 15000;
           setError(
@@ -58,7 +70,6 @@ export const useCoins = () => {
           return;
         }
 
-        // server errors
         if (err.status >= 500) {
           setError("Server error. Try again later.");
         } else {
@@ -68,15 +79,15 @@ export const useCoins = () => {
         setLoading(false);
       }
     },
-    [page],
+    [id, timeframe],
   );
 
-  // initial load + whenever page changes
+  // initial load
   useEffect(() => {
     if (isSearching) return;
 
-    loadCoins(true, true);
-  }, [isSearching, loadCoins]);
+    loadChart(true, true);
+  }, [id, isSearching, loadChart]);
 
   // auto refresh
   useEffect(() => {
@@ -84,17 +95,17 @@ export const useCoins = () => {
       if (document.visibilityState === "hidden") return;
       if (isSearching) return;
 
-      loadCoins(false);
+      loadChart(false);
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [loadCoins, isSearching]);
+  }, [loadChart, isSearching]);
 
-  // refresh when user returns to tab
+  // refetch on tab visibility
   useEffect(() => {
     const handleVisibility = () => {
       if (document.visibilityState === "visible" && !isSearching) {
-        loadCoins(false);
+        loadChart(false);
       }
     };
 
@@ -102,25 +113,20 @@ export const useCoins = () => {
 
     return () =>
       document.removeEventListener("visibilitychange", handleVisibility);
-  }, [loadCoins, isSearching]);
+  }, [loadChart, isSearching]);
 
-  // manual retry function
+  // manual refetch
   const refetch = () => {
-    loadCoins(true, true);
+    loadChart(true, true);
   };
 
-  // scroll to top on page change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page]);
-
   return {
-    coins,
-    page,
-    setPage,
+    data,
     loading,
     error,
     refetch,
     isCoolingDown,
+    timeframe,
+    setTimeframe,
   };
 };
