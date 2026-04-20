@@ -40,7 +40,9 @@ const SearchTab = ({ showSearch, setShowSearch }: Props) => {
     if (coins.length === 0)
       return <Error message={`No results for "${search}"`} />;
 
-    return coins.map((coin) => <SearchRow coin={coin} key={coin.id} />);
+    return coins.map((coin) => (
+      <SearchRow coin={coin} key={coin.id} setShowSearch={setShowSearch} />
+    ));
   };
 
   return (

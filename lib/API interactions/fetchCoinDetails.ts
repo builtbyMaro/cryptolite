@@ -8,7 +8,6 @@ export const fetchCoinDetails = async (id: string): Promise<CoinDetails> => {
       headers: {
         "x-cg-demo-api-key": process.env.NEXT_PUBLIC_COINGECKO_API_KEY!,
       },
-      next: { revalidate: 60 },
     },
   );
 

@@ -9,7 +9,7 @@ export const useDebounce = ({ search }: Prop) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 600);
+    }, 700);
 
     return () => clearTimeout(timeout);
   }, [search]);

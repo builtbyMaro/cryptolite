@@ -22,7 +22,7 @@ export const useWatchlist = () => {
       if (!force && now < cooldownUntil.current) return;
 
       // stop spam from auto-refresh effects
-      if (!force && now - lastFetchTime.current < 45000) return;
+      if (!force && now - lastFetchTime.current < 20000) return;
 
       lastFetchTime.current = now;
 
@@ -85,7 +85,7 @@ export const useWatchlist = () => {
       if (isSearching) return;
 
       loadCoins(false);
-    }, 60000);
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [loadCoins, isSearching]);

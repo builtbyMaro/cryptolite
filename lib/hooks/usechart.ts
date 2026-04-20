@@ -26,7 +26,7 @@ export const useChart = (id: string) => {
       if (!force && now < cooldownUntil.current) return;
 
       // prevent spam fetches
-      if (!force && now - lastFetchTime.current < 60000) return;
+      if (!force && now - lastFetchTime.current < 20000) return;
 
       lastFetchTime.current = now;
 
@@ -96,7 +96,7 @@ export const useChart = (id: string) => {
       if (isSearching) return;
 
       loadChart(false);
-    }, 60000);
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [loadChart, isSearching]);

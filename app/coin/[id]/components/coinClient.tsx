@@ -32,7 +32,7 @@ const CoinClient = ({ coin }: Props) => {
       if (isSearching) return;
 
       router.refresh();
-    }, 60000);
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [router, isSearching]);
