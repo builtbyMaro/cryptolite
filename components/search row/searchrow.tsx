@@ -24,7 +24,9 @@ const SearchRow = ({ coin, setShowSearch }: Prop) => {
         <div className={styles.dayContainer}>
           <p className={styles[day.class]}>
             <i className={day.icon} />
-            {coin.price_change_percentage_24h?.toFixed(1)}%
+            {coin.price_change_percentage_24h
+              ? `${coin.price_change_percentage_24h.toFixed(1)}%`
+              : "-"}
           </p>
         </div>
       </div>

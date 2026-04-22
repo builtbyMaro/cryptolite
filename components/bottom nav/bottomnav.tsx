@@ -24,14 +24,14 @@ const BottomNav = () => {
           className={`${styles.navLink} ${pathname === "/" && showSearch === false ? styles.activeLink : ""}`}
           onClick={() => showSearch && setShowSearch(false)}
         >
-          <i className="bx bx-home" />
+          <i className="bx bxs-bolt" />
           <h3>Home</h3>
         </Link>
         <div
           className={`${styles.navLink} ${showSearch === true ? styles.activeLink : ""}`}
           onClick={() => setShowSearch(true)}
         >
-          <i className="bx bx-search" />
+          <i className="bx bx-search-alt" />
           <h3>Search</h3>
         </div>
         <Link

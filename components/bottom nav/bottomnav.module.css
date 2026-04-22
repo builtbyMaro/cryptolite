@@ -5,7 +5,7 @@
   right: 0;
   z-index: 1000;
   display: none;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   background-color: var(--color-card);
   padding: var(--space-sm);

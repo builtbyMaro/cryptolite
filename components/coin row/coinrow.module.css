@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: end;
   padding: var(--space-sm);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   color: var(--color-text-primary);
   transition: color 0.3s ease;
 }
@@ -36,6 +36,7 @@
 
 .rankContainer i {
   cursor: pointer;
+  font-size: var(--font-size-xl);
 }
 
 .filledIcon {

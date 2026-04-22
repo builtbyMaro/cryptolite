@@ -60,7 +60,6 @@ const CoinRow = ({ coin, showrank = true }: Prop) => {
             {coin.price_change_percentage_24h
               ? `${coin.price_change_percentage_24h.toFixed(1)}%`
               : "-"}
-            %
           </p>
         </div>
         <div className={styles.weekContainer}>
