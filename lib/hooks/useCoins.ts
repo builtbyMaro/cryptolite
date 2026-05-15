@@ -35,7 +35,6 @@ export const useCoins = () => {
 
         cooldownUntil.current = 0;
         setIsCoolingDown(false);
-        console.log("I just Fetched");
       } catch (err: any) {
         if (err.status === 429) {
           const coolDownEnd = Date.now() + 15000;

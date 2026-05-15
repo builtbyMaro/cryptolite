@@ -9,7 +9,6 @@ type Props = {
 
 const page = async ({ params }: Props) => {
   const { id } = await params;
-  console.log("Coin ID:", id);
   const coin = await fetchCoinDetails(id);
 
   return <CoinClient coin={coin} key={coin.id} />;
