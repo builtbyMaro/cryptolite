@@ -56,6 +56,7 @@ It provides a clean interface to:
 - Market cap
 - 24h high / low
 - Circulating, total, and max supply
+- 24h, 7d and 30d price change chart
 - External links (website, socials)
 
 ### Watchlist
@@ -88,15 +89,6 @@ It provides a clean interface to:
 - No backend
 - No authentication
 - No real-time WebSocket updates
-- No advanced charts (yet)
-
----
-
-## Future Improvements
-
-- 24h price chart
-- Better data formatting
-- Performance optimizations
 
 ---
 
@@ -116,7 +108,8 @@ Open http://localhost:3000 in your browser.
 
 ## Project Status
 
-In active development (Build-in-public challenge)
+Completed.
+Live Link: https://cryptolite-black.vercel.app/
 
 ---
 
