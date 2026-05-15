@@ -6,7 +6,7 @@
   background-color: var(--color-card);
   position: sticky;
   top: 0;
-  z-index: 998;
+  z-index: 996;
   transition: background-color 0.3s ease;
 }
 

@@ -22,8 +22,9 @@
   font-size: var(--font-size-base);
 }
 
-.clearBtn:hover {
-  transform: scale(0.9);
+.clearBtn:disabled {
+  cursor: not-allowed;
+  background-color: hsla(279, 77%, 46%, 70%);
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
