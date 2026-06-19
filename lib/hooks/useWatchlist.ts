@@ -35,33 +35,27 @@ export const useWatchlist = () => {
 
         cooldownUntil.current = 0;
         setIsCoolingDown(false);
-      } catch (err: any) {
-        if (err.status === 429) {
-          const coolDownEnd = Date.now() + 15000;
-          cooldownUntil.current = coolDownEnd;
-          setIsCoolingDown(true);
+      } catch (error: any) {
+        if (error.status) {
+          if (error.status === 429) {
+            const coolDownEnd = Date.now() + 15000;
+            cooldownUntil.current = coolDownEnd;
+            setIsCoolingDown(true);
 
-          setError("Too many requests. Please wait a moment.");
-          setTimeout(() => {
-            setIsCoolingDown(false);
-          }, 15000);
-          return;
-        }
+            setError("Too many requests. Please wait a moment.");
+            setTimeout(() => {
+              setIsCoolingDown(false);
+            }, 15000);
+            return;
+          }
 
-        // network / CORS failure fallback
-        if (err.message === "Network Error") {
-          cooldownUntil.current = Date.now() + 15000;
-          setError(
-            "Connection issue or rate limit reached. Please wait a moment.",
-          );
-          return;
-        }
-
-        // server errors
-        if (err.status >= 500) {
-          setError("Server error. Try again later.");
+          if (typeof error.status === "number" && error.status >= 500) {
+            setError("Server error. Try again later.");
+            return;
+          }
         } else {
-          setError("Something went wrong.");
+          cooldownUntil.current = Date.now() + 15000;
+          setError("Please check your connection and try again.");
         }
       } finally {
         setLoading(false);
@@ -77,9 +71,10 @@ export const useWatchlist = () => {
     loadCoins(true, true);
   }, [watchlist, isSearching, loadCoins]);
 
-  // auto refresh
+  // auto refresh every 30 secs
   useEffect(() => {
     const interval = setInterval(() => {
+      // this only works if the user is currently on viewing the page.
       if (document.visibilityState === "hidden") return;
       if (isSearching) return;
 
