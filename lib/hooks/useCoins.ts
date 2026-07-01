@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Coin } from "@/lib/types/types";
-import { fetchCoins } from "@/lib/API interactions/fetchCoins";
+import { fetchData } from "../API interactions/fetchData";
 import { useAppContext } from "../context/appContext";
 
 export const useCoins = () => {
@@ -30,7 +30,8 @@ export const useCoins = () => {
       setError(null);
 
       try {
-        const data = await fetchCoins(page);
+        const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${page}&sparkline=false&price_change_percentage=1h,7d`;
+        const data = await fetchData(url);
         setCoins(data);
 
         cooldownUntil.current = 0;

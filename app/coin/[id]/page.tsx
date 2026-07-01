@@ -1,6 +1,6 @@
-import { fetchCoinDetails } from "@/lib/API interactions/fetchCoinDetails";
 import CoinClient from "./components/coinClient";
 import { notFound } from "next/navigation";
+import { fetchData } from "@/lib/API interactions/fetchData";
 
 type Props = {
   params: Promise<{
@@ -11,7 +11,9 @@ type Props = {
 const page = async ({ params }: Props) => {
   const { id } = await params;
   try {
-    const coin = await fetchCoinDetails(id);
+    const url = `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false`;
+
+    const coin = await fetchData(url);
 
     return <CoinClient coin={coin} key={coin.id} />;
   } catch (error: any) {

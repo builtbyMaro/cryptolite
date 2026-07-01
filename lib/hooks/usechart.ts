@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { fetchChart } from "@/lib/API interactions/fetchChart";
+import { fetchData } from "@/lib/API interactions/fetchData";
 import { useAppContext } from "../context/appContext";
 
 type ChartPoint = {
@@ -34,7 +34,8 @@ export const useChart = (id: string) => {
       setError(null);
 
       try {
-        const res = await fetchChart(id, timeframe);
+        const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${timeframe}`;
+        const res = await fetchData(url);
 
         const formattedRes: ChartPoint[] = res.prices.map(
           ([time, price]: [number, number]) => ({
