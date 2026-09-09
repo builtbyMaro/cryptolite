@@ -1,121 +1,51 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Coin } from "@/lib/types/types";
 import { fetchData } from "../API interactions/fetchData";
-import { useAppContext } from "../context/appContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { noop } from "@tanstack/react-query";
 
 export const useCoins = () => {
-  const { isSearching } = useAppContext();
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isCoolingDown, setIsCoolingDown] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const queryClient = useQueryClient();
 
-  const lastFetchTime = useRef(0);
-  const cooldownUntil = useRef(0);
+  const genUrl = (page: number) =>
+    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${page}&sparkline=false&price_change_percentage=1h,7d`;
 
-  const loadCoins = useCallback(
-    async (showLoading = false, force = false) => {
-      const now = Date.now();
+  const { data, error, isError, isLoading, refetch } = useQuery<
+    Coin[],
+    Error & { status?: number }
+  >({
+    queryKey: ["coins", currentPage],
+    queryFn: () => fetchData(genUrl(currentPage)),
+    staleTime: 30 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchInterval: 30 * 1000,
+  });
 
-      // cooldown check
-      if (!force && now < cooldownUntil.current) return;
-
-      // stop spam from auto-refresh effects
-      if (!force && now - lastFetchTime.current < 20000) return;
-
-      lastFetchTime.current = now;
-
-      if (showLoading) setLoading(true);
-      setError(null);
-
-      try {
-        const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${page}&sparkline=false&price_change_percentage=1h,7d`;
-        const data = await fetchData(url);
-        setCoins(data);
-
-        cooldownUntil.current = 0;
-        setIsCoolingDown(false);
-      } catch (error: any) {
-        if (error.status) {
-          if (error.status === 429) {
-            const coolDownEnd = Date.now() + 15000;
-            cooldownUntil.current = coolDownEnd;
-            setIsCoolingDown(true);
-
-            setError("Too many requests. Please wait a moment.");
-            setTimeout(() => {
-              setIsCoolingDown(false);
-            }, 15000);
-            return;
-          }
-
-          if (typeof error.status === "number" && error.status >= 500) {
-            setError("Server error. Try again later.");
-            return;
-          }
-        } else {
-          // handles fetch request failure
-          cooldownUntil.current = Date.now() + 15000;
-          setError("Please check your connection and try again.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    },
-    [page],
-  );
-
-  // initial load + whenever page changes
+  // Prefetch next page
   useEffect(() => {
-    if (isSearching) return;
-
-    loadCoins(true, true);
-  }, [isSearching, loadCoins]);
-
-  // auto refresh every 30 secs
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (document.visibilityState === "hidden") return;
-      if (isSearching) return;
-
-      loadCoins(false);
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [loadCoins, isSearching]);
-
-  // refresh when user returns to tab
-  useEffect(() => {
-    const handleVisibility = () => {
-      if (document.visibilityState === "visible" && !isSearching) {
-        loadCoins(false);
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibility);
-
-    return () =>
-      document.removeEventListener("visibilitychange", handleVisibility);
-  }, [loadCoins, isSearching]);
-
-  // manual retry function
-  const refetch = () => {
-    loadCoins(true, true);
-  };
+    const nextPage = currentPage + 1;
+    queryClient
+      .query({
+        queryKey: ["coins", nextPage],
+        queryFn: () => fetchData(genUrl(nextPage)),
+      })
+      .catch(noop);
+  }, [currentPage, queryClient]);
 
   // scroll to top on page change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page]);
+  }, [currentPage]);
 
   return {
-    coins,
-    page,
-    setPage,
-    loading,
+    coins: data,
+    currentPage,
+    setCurrentPage,
+    isLoading,
     error,
+    isError,
     refetch,
-    isCoolingDown,
   };
 };

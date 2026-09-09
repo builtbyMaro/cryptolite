@@ -1,31 +1,32 @@
 "use client";
 import CoinPageLoader from "@/components/loading screens/coin page loader/coinPageLoader";
-import Error from "@/components/error/error";
+import ErrorComp from "@/components/error/error";
 import { useCoins } from "@/lib/hooks/useCoins";
 import CoinRow from "@/components/coin row/coinRow";
 import PageNavigator from "@/components/page navigator/pageNavigator";
 
 const CoinSection = () => {
-  const { coins, loading, error, refetch, isCoolingDown, page, setPage } =
-    useCoins();
+  const {
+    coins,
+    currentPage,
+    setCurrentPage,
+    error,
+    isError,
+    isLoading,
+    refetch,
+  } = useCoins();
 
-  if (loading) {
+  if (isLoading) {
     return <CoinPageLoader />;
   }
 
-  if (error) {
-    return (
-      <Error
-        message={error}
-        actionText="Retry"
-        action={refetch}
-        isCoolingDown={isCoolingDown}
-      />
-    );
+  if (isError) {
+    return <ErrorComp error={error} action={refetch} />;
   }
 
-  if (coins.length === 0) {
-    return <Error message="No Coins Available" />;
+  if (!coins || coins.length === 0) {
+    const error = new Error("NO COINS");
+    return <ErrorComp error={error} />;
   }
 
   return (
@@ -33,7 +34,9 @@ const CoinSection = () => {
       {coins.map((coin) => (
         <CoinRow key={coin.id} coin={coin} />
       ))}
-      {!loading && <PageNavigator page={page} setPage={setPage} />}
+      {!isLoading && (
+        <PageNavigator page={currentPage} setPage={setCurrentPage} />
+      )}
     </>
   );
 };

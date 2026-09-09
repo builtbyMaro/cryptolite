@@ -6,7 +6,7 @@ export const fetchData = async (url: string) => {
   });
 
   if (!res.ok) {
-    const error = new Error(`HTTP ${res.status}`) as any;
+    const error = new Error(`Something went wrong!`) as any;
     error.status = res.status;
     throw error;
   }
