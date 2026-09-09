@@ -1,4 +1,9 @@
 import CoinClient from "./components/coinClient";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { fetchData } from "@/lib/API interactions/fetchData";
 
@@ -8,29 +13,32 @@ type Props = {
   }>;
 };
 
-const page = async ({ params }: Props) => {
+const getCoinUrl = (id: string) =>
+  `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false`;
+
+const Page = async ({ params }: Props) => {
   const { id } = await params;
+
+  const queryClient = new QueryClient();
+
   try {
-    const url = `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false`;
-
-    const coin = await fetchData(url);
-
-    return <CoinClient coin={coin} key={coin.id} />;
+    await queryClient.query({
+      queryKey: ["coin", id],
+      queryFn: () => fetchData(getCoinUrl(id)),
+    });
   } catch (error: any) {
-    if (error.status === 404) {
+    if (error.status && error.status == 404) {
       notFound();
     }
 
-    if (error.status === 429) {
-      throw new Error("RATE_LIMIT");
-    }
-
-    if (typeof error.status === "number" && error.status >= 500) {
-      throw new Error("SERVER_ERROR");
-    }
-
-    throw new Error("NETWORK_ERROR");
+    throw error;
   }
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CoinClient id={id} />
+    </HydrationBoundary>
+  );
 };
 
-export default page;
+export default Page;

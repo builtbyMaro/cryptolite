@@ -2,7 +2,7 @@
 import styles from "./chart.module.css";
 import { useChart } from "@/lib/hooks/usechart";
 import Spinner from "@/components/loading spinner/spinner";
-import Error from "@/components/error/error";
+import ErrorComp from "@/components/error/error";
 import ChartNav from "./chartNav";
 import {
   AreaChart,
@@ -18,29 +18,14 @@ type Prop = {
 };
 
 const Chart = ({ id }: Prop) => {
-  const {
-    data,
-    loading,
-    error,
-    refetch,
-    isCoolingDown,
-    timeframe,
-    setTimeframe,
-  } = useChart(id);
+  const { data, error, isError, refetch, isLoading, timeframe, setTimeframe } =
+    useChart(id);
 
   // loading state
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   // error state
-  if (error)
-    return (
-      <Error
-        message={error}
-        action={refetch}
-        actionText="Retry"
-        isCoolingDown={isCoolingDown}
-      />
-    );
+  if (isError) return <ErrorComp error={error} action={refetch} />;
 
   // determine direction (green/red)
   const first = data[0]?.price;

@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { fetchData } from "@/lib/API interactions/fetchData";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "../context/appContext";
 
 type ChartPoint = {
@@ -8,122 +9,47 @@ type ChartPoint = {
 };
 
 export const useChart = (id: string) => {
-  const { isSearching } = useAppContext();
   const [timeframe, setTimeframe] = useState<"1" | "7" | "30">("1");
-  const [data, setData] = useState<ChartPoint[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isCoolingDown, setIsCoolingDown] = useState(false);
+  const { isSearching } = useAppContext();
+  const queryClient = useQueryClient();
 
-  const lastFetchTime = useRef(0);
-  const cooldownUntil = useRef(0);
+  const genUrl = (id: string, timeframe: string) =>
+    `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${timeframe}`;
 
-  const loadChart = useCallback(
-    async (showLoading = false, force = false) => {
-      const now = Date.now();
+  const { data, error, isError, isLoading, refetch } = useQuery({
+    queryKey: ["chart", id, timeframe],
+    queryFn: () => fetchData(genUrl(id, timeframe)),
+    staleTime: 30 * 1000,
+    refetchInterval: 30 * 1000,
+    gcTime: 5 * 60 * 1000,
+    enabled: !isSearching,
+  });
 
-      // block during cooldown
-      if (!force && now < cooldownUntil.current) return;
+  useEffect(() => {
+    queryClient.query({
+      queryKey: ["chart", id, "7"],
+      queryFn: () => fetchData(genUrl(id, "7")),
+    });
 
-      // prevent spam fetches
-      if (!force && now - lastFetchTime.current < 20000) return;
+    queryClient.query({
+      queryKey: ["chart", id, "30"],
+      queryFn: () => fetchData(genUrl(id, "30")),
+    });
+  }, [queryClient]);
 
-      lastFetchTime.current = now;
-
-      if (showLoading) setLoading(true);
-      setError(null);
-
-      try {
-        const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${timeframe}`;
-        const res = await fetchData(url);
-
-        const formattedRes: ChartPoint[] = res.prices.map(
-          ([time, price]: [number, number]) => ({
-            time,
-            price,
-          }),
-        );
-
-        setData(formattedRes);
-
-        cooldownUntil.current = 0;
-        setIsCoolingDown(false);
-      } catch (error: any) {
-        if (error.status) {
-          if (error.status === 429) {
-            const coolDownEnd = Date.now() + 15000;
-            cooldownUntil.current = coolDownEnd;
-            setIsCoolingDown(true);
-
-            setError("Too many requests. Please wait a moment.");
-
-            setTimeout(() => {
-              setIsCoolingDown(false);
-            }, 15000);
-
-            return;
-          }
-
-          if (typeof error.status === "number" && error.status >= 500) {
-            setError("Server error. Try again later.");
-            return;
-          }
-        } else {
-          // handles request failure errors
-          cooldownUntil.current = Date.now() + 15000;
-          setError("Please check your connection and try again.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    },
-    [id, timeframe],
+  const formattedData: ChartPoint[] = data?.prices.map(
+    ([time, price]: [number, number]) => ({
+      time,
+      price,
+    }),
   );
 
-  // initial load
-  useEffect(() => {
-    if (isSearching) return;
-
-    loadChart(true, true);
-  }, [id, isSearching, loadChart]);
-
-  // auto refresh every 30 secs
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (document.visibilityState === "hidden") return;
-      if (isSearching) return;
-
-      loadChart(false);
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [loadChart, isSearching]);
-
-  // refetch on tab visibility
-  useEffect(() => {
-    const handleVisibility = () => {
-      if (document.visibilityState === "visible" && !isSearching) {
-        loadChart(false);
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibility);
-
-    return () =>
-      document.removeEventListener("visibilitychange", handleVisibility);
-  }, [loadChart, isSearching]);
-
-  // manual refetch
-  const refetch = () => {
-    loadChart(true, true);
-  };
-
   return {
-    data,
-    loading,
+    data: formattedData,
+    isLoading,
     error,
+    isError,
     refetch,
-    isCoolingDown,
     timeframe,
     setTimeframe,
   };

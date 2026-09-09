@@ -4,9 +4,11 @@ import { fetchData } from "../API interactions/fetchData";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { noop } from "@tanstack/react-query";
+import { useAppContext } from "../context/appContext";
 
 export const useCoins = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const { isSearching } = useAppContext();
   const queryClient = useQueryClient();
 
   const genUrl = (page: number) =>
@@ -21,6 +23,7 @@ export const useCoins = () => {
     staleTime: 30 * 1000,
     gcTime: 30 * 60 * 1000,
     refetchInterval: 30 * 1000,
+    enabled: !isSearching,
   });
 
   // Prefetch next page
