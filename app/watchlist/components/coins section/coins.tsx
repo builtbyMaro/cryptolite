@@ -1,43 +1,35 @@
 "use client";
+import styles from "./coins.module.css";
 import CoinRow from "@/components/coin row/coinRow";
 import CoinPageLoader from "@/components/loading screens/coin page loader/coinPageLoader";
 import Error from "@/components/error/error";
 import { useWatchlist } from "@/lib/hooks/useWatchlist";
 
 const CoinSection = () => {
-  const { coins, loading, error, isCoolingDown, refetch } = useWatchlist();
+  const { coins, error, isError, isLoading, refetch } = useWatchlist();
 
-  if (loading) {
+  if (isLoading) {
     return <CoinPageLoader />;
   }
 
-  if (error) {
-    return (
-      <Error
-        message={error}
-        actionText="Retry"
-        action={refetch}
-        isCoolingDown={isCoolingDown}
-      />
-    );
+  if (isError) {
+    return <Error error={error} action={refetch} />;
   }
 
-  if (coins.length === 0) {
+  if (coins && coins.length === 0) {
     return (
-      <Error
-        message={
-          <span>
-            Try clicking on the <i className="bx bx-star" /> icon to add coins
-            to your watchlist
-          </span>
-        }
-      />
+      <div className={styles.container}>
+        <span className={styles.message}>
+          Try clicking on the <i className="bx bx-star" /> icon to add coins to
+          your watchlist
+        </span>
+      </div>
     );
   }
 
   return (
     <>
-      {coins.map((coin) => (
+      {coins?.map((coin) => (
         <CoinRow key={coin.id} coin={coin} showrank={false} />
       ))}
     </>
