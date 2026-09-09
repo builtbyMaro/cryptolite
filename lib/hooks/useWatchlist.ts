@@ -20,7 +20,7 @@ export const useWatchlist = () => {
   });
 
   return {
-    coins: data,
+    coins: data ?? [],
     isLoading,
     error,
     isError,

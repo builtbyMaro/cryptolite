@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
 import { Coin } from "../types/types";
 import { searchCoins } from "../API interactions/fetchSearch";
 import { useDebounce } from "./useDebounce";
+import { useAppContext } from "../context/appContext";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   search: string;
@@ -9,62 +10,26 @@ type Props = {
 
 export const useSearch = ({ search }: Props) => {
   const debouncedSearch = useDebounce({ search });
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isCoolingDown, setIsCoolingDown] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const { isSearching } = useAppContext();
 
-  const cooldownUntil = useRef(0);
-
-  useEffect(() => {
-    const loadCoins = async () => {
-      if (!debouncedSearch) {
-        setCoins([]);
-        setHasSearched(false);
-        setLoading(false);
-        return;
-      }
-      setHasSearched(true);
-      setLoading(true);
-      setError(null);
-      try {
-        const coins = await searchCoins(debouncedSearch);
-        setCoins(coins);
-      } catch (error: any) {
-        if (error.status) {
-          if (error.status === 429) {
-            const coolDownEnd = Date.now() + 15000;
-            cooldownUntil.current = coolDownEnd;
-            setIsCoolingDown(true);
-
-            setError("Too many requests. Please wait a moment.");
-            setTimeout(() => {
-              setIsCoolingDown(false);
-            }, 15000);
-            return;
-          }
-
-          if (typeof error.status === "number" && error.status >= 500) {
-            setError("Server error. Try again later.");
-          }
-        } else {
-          cooldownUntil.current = Date.now() + 15000;
-          setError("Please check your connection and try again.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadCoins();
-  }, [debouncedSearch]);
+  const { data, error, isError, isLoading, refetch } = useQuery<
+    Coin[],
+    Error & { status?: number }
+  >({
+    queryKey: ["search", debouncedSearch],
+    queryFn: () => searchCoins(debouncedSearch),
+    staleTime: 30 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchInterval: 30 * 1000,
+    enabled: isSearching && !!debouncedSearch,
+  });
 
   return {
-    coins,
-    loading,
+    coins: data ?? [],
     error,
-    isCoolingDown,
-    hasSearched,
+    isError,
+    isLoading,
+    refetch,
+    hasSearched: !!debouncedSearch,
   };
 };

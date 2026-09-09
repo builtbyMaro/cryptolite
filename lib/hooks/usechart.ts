@@ -45,7 +45,7 @@ export const useChart = (id: string) => {
   );
 
   return {
-    data: formattedData,
+    data: formattedData ?? [],
     isLoading,
     error,
     isError,

@@ -24,7 +24,7 @@ const CoinSection = () => {
     return <ErrorComp error={error} action={refetch} />;
   }
 
-  if (!coins || coins.length === 0) {
+  if (coins.length === 0) {
     const error = new Error("NO COINS");
     return <ErrorComp error={error} />;
   }

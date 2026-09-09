@@ -43,7 +43,7 @@ export const useCoins = () => {
   }, [currentPage]);
 
   return {
-    coins: data,
+    coins: data ?? [],
     currentPage,
     setCurrentPage,
     isLoading,

@@ -16,7 +16,7 @@ const CoinSection = () => {
     return <Error error={error} action={refetch} />;
   }
 
-  if (coins && coins.length === 0) {
+  if (coins.length === 0) {
     return (
       <div className={styles.container}>
         <span className={styles.message}>

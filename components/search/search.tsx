@@ -16,7 +16,7 @@ type Props = {
 const SearchTab = ({ showSearch, setShowSearch }: Props) => {
   const [search, setSearch] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
-  const { coins, loading, error, isCoolingDown, hasSearched } = useSearch({
+  const { coins, isLoading, error, isError, hasSearched } = useSearch({
     search,
   });
 
@@ -33,12 +33,15 @@ const SearchTab = ({ showSearch, setShowSearch }: Props) => {
   }, [showSearch]);
 
   const renderContent = () => {
-    if (error) return <Error message={error} />;
-    if (loading) return <SearchLoader />;
+    if (error) return <Error error={error} />;
+
+    if (isLoading) return <SearchLoader />;
+
     if (!hasSearched)
       return <p className={styles.start}>Start typing to search</p>;
+
     if (coins.length === 0)
-      return <Error message={`No results for "${search}"`} />;
+      return <p className={styles.start}>={`No results for "${search}"`}</p>;
 
     return coins.map((coin) => (
       <SearchRow coin={coin} key={coin.id} setShowSearch={setShowSearch} />
