@@ -25,6 +25,7 @@ const Page = async ({ params }: Props) => {
     await queryClient.query({
       queryKey: ["coin", id],
       queryFn: () => fetchData(getCoinUrl(id)),
+      staleTime: 30 * 1000,
     });
   } catch (error: any) {
     if (error.status && error.status == 404) {
