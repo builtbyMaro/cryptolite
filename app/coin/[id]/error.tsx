@@ -4,7 +4,13 @@ import { useBack } from "@/lib/hooks/useBack";
 import { ErrorInfo } from "next/error";
 import ErrorComp from "@/components/error/error";
 
-const Error = ({ error, unstable_retry }: ErrorInfo) => {
+const Error = ({
+  error,
+  retry,
+}: {
+  error: Error & { digest?: string };
+  retry: () => void;
+}) => {
   const handleBack = useBack();
 
   return (
@@ -15,7 +21,7 @@ const Error = ({ error, unstable_retry }: ErrorInfo) => {
           <h5>Back</h5>
         </div>
       </div>
-      <ErrorComp error={error} action={unstable_retry} />
+      <ErrorComp error={error} action={retry} />
     </>
   );
 };
